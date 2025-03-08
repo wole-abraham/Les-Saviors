@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Les Savoir</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #ff0000;
+            --primary-light: #ffe6e6;
+            --secondary-color: #2c3e50;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ff000010 0%, #ffffff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .signup-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+            max-width: 550px;
+            width: 100%;
+            margin: 2rem auto;
+            position: relative;
+        }
+
+        .signup-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), #ff6b6b);
+        }
+
+        .signup-header {
+            text-align: center;
+            padding: 2rem 0;
+            background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+            border-bottom: 1px solid #f1f1f1;
+            margin-bottom: 2rem;
+        }
+
+        .signup-header h2 {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin: 0;
+            font-size: 1.75rem;
+        }
+
+        .progress {
+            height: 6px;
+            border-radius: 3px;
+            background-color: #f1f1f1;
+            margin: 0 2rem 2rem;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary-color), #ff6b6b);
+            transition: width 0.5s ease;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            position: relative;
+            padding: 0 40px;
+        }
+
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            height: 2px;
+            background-color: #f1f1f1;
+            z-index: 0;
+        }
+
+        .step {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #666;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+            margin: 0 1.5rem;
+        }
+
+        .step.active {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255,0,0,0.2);
+        }
+
+        .step.completed {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .form-step {
+            display: none;
+            padding: 0 2rem;
+        }
+
+        .form-step.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.1);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary-color), #ff6b6b);
+            border: none;
+            box-shadow: 0 4px 15px rgba(255,0,0,0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,0,0,0.3);
+            background: linear-gradient(90deg, #ff6b6b, var(--primary-color));
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            color: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+            border-color: #dee2e6;
+            color: var(--secondary-color);
+        }
+
+        .form-footer {
+            text-align: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+            border-top: 1px solid #f1f1f1;
+            margin-top: 2rem;
+        }
+
+        .form-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .form-footer a:hover {
+            color: #ff6b6b;
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(10px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        /* Success icon styling */
+        .success-icon {
+            color: #28a745;
+            font-size: 64px;
+            margin-bottom: 1rem;
+            animation: scaleIn 0.5s ease;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        /* Input group styling */
+        .input-group-text {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-right: none;
+            color: #6c757d;
+        }
+
+        .input-group .form-control {
+            border-left: none;
+        }
+
+        /* Custom checkbox styling */
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="signup-card">
+            <div class="signup-header">
+                <h2>Create Your Account</h2>
+                <p class="text-muted mb-0">Join our community of learners</p>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+            </div>
+
+            <!-- Step Indicators -->
+            <div class="step-indicator">
+                <div class="step active">1</div>
+                <div class="step">2</div>
+                <div class="step">3</div>
+            </div>
+
+            <!-- Form -->
+            <form id="signupForm" method="post">
+                {% csrf_token %}
+                <!-- Step 1: Account Information -->
+                <div class="form-step active" id="step1">
+                    <div class="mb-4">
+                        <label class="form-label">Email Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            <input type="email" class="form-control" name="email" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" name="password" class="form-control" placeholder="Create password" required>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Confirm Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" name="password" class="form-control" placeholder="Confirm password" required>
+                        </div>
+                    </div>
+                    <div class="d-grid">
+                        <button type="button" class="btn btn-primary" onclick="nextStep(1)">Continue</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Personal Information -->
+                <div class="form-step" id="step2">
+                    <div class="mb-4">
+                        <label class="form-label">First Name</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input type="text" class="form-control" name="first_name" placeholder="Enter your First Name" required>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Last Name</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input type="text" class="form-control" name="last_name" placeholder="Enter your Last Name" required>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Phone Number</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                            <input type="tel" class="form-control" name="phone" placeholder="Enter phone number" required>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Date of Birth</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                            <input type="date" name="date" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3">
+                        <button type="button" class="btn btn-secondary flex-grow-1" onclick="prevStep(2)">Back</button>
+                        <button type="button" class="btn btn-primary flex-grow-1" onclick="nextStep(2)">Continue</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Confirmation -->
+                <div class="form-step" id="step3">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-check-circle success-icon"></i>
+                        <h4>Almost Done!</h4>
+                        <p class="text-muted">Please review your information before submitting.</p>
+                    </div>
+                    <div class="mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" required id="terms">
+                            <label class="form-check-label" for="terms">
+                                I agree to the Terms of Service and Privacy Policy
+                            </label>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3">
+                        <button type="button" class="btn btn-secondary flex-grow-1" onclick="prevStep(3)">Back</button>
+                        <button type="submit" class="btn btn-primary flex-grow-1">Create Account</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="form-footer">
+                <p class="mb-0">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const progressBar = document.querySelector('.progress-bar');
+        const steps = document.querySelectorAll('.step');
+        const form = document.getElementById('signupForm');
+
+        // Validation patterns
+        const patterns = {
+            email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            password: /^.{6,}$/, // At least 6 characters
+            phone: /^[0-9]{10}$/, // 10 digits
+            name: /^[a-zA-Z\s]{2,}$/ // At least 2 characters, letters only
+        };
+
+        // Error styling
+        function showError(input, message) {
+            const formGroup = input.closest('.mb-4');
+            const existingError = formGroup.querySelector('.error-message');
+            
+            if (!existingError) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message text-danger mt-2 small';
+                errorDiv.textContent = message;
+                formGroup.appendChild(errorDiv);
+            }
+            
+            input.classList.add('is-invalid');
+        }
+
+        // Clear error styling
+        function clearError(input) {
+            const formGroup = input.closest('.mb-4');
+            const errorDiv = formGroup.querySelector('.error-message');
+            if (errorDiv) {
+                errorDiv.remove();
+            }
+            input.classList.remove('is-invalid');
+        }
+
+        // Validate step 1
+        function validateStep1() {
+            const email = document.querySelector('input[type="email"]');
+            const password = document.querySelector('input[type="password"]');
+            const confirmPassword = document.querySelectorAll('input[type="password"]')[1];
+            let isValid = true;
+
+            // Clear previous errors
+            [email, password, confirmPassword].forEach(input => clearError(input));
+
+            // Email validation
+            if (!email.value.trim()) {
+                showError(email, 'Email is required');
+                isValid = false;
+            } else if (!patterns.email.test(email.value)) {
+                showError(email, 'Please enter a valid email address');
+                isValid = false;
+            }
+
+            // Password validation
+            if (!password.value) {
+                showError(password, 'Password is required');
+                isValid = false;
+            } else if (!patterns.password.test(password.value)) {
+                showError(password, 'Password must be at least 6 characters long');
+                isValid = false;
+            }
+
+            // Confirm password validation
+            if (!confirmPassword.value) {
+                showError(confirmPassword, 'Please confirm your password');
+                isValid = false;
+            } else if (password.value !== confirmPassword.value) {
+                showError(confirmPassword, 'Passwords do not match');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // Validate step 2
+        function validateStep2() {
+            const name = document.querySelector('input[type="text"]');
+            const phone = document.querySelector('input[type="tel"]');
+            const dob = document.querySelector('input[type="date"]');
+            let isValid = true;
+
+            // Clear previous errors
+            [name, phone, dob].forEach(input => clearError(input));
+
+            // Name validation
+            if (!name.value.trim()) {
+                showError(name, 'Full name is required');
+                isValid = false;
+            } else if (!patterns.name.test(name.value)) {
+                showError(name, 'Please enter a valid name');
+                isValid = false;
+            }
+
+            // Phone validation
+            if (!phone.value.trim()) {
+                showError(phone, 'Phone number is required');
+                isValid = false;
+            } else if (!patterns.phone.test(phone.value)) {
+                showError(phone, 'Please enter a valid 10-digit phone number');
+                isValid = false;
+            }
+
+            // Date of birth validation
+            if (!dob.value) {
+                showError(dob, 'Date of birth is required');
+                isValid = false;
+            } else {
+                const dobDate = new Date(dob.value);
+                const today = new Date();
+                const age = today.getFullYear() - dobDate.getFullYear();
+                
+                if (age < 16) {
+                    showError(dob, 'You must be at least 16 years old');
+                    isValid = false;
+                }
+            }
+
+            return isValid;
+        }
+
+        // Validate step 3
+        function validateStep3() {
+            const terms = document.getElementById('terms');
+            let isValid = true;
+
+            if (!terms.checked) {
+                showError(terms, 'You must accept the terms and conditions');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function updateProgress(step) {
+            const percent = ((step - 1) / 2) * 100;
+            progressBar.style.width = percent + '%';
+            
+            steps.forEach((stepEl, index) => {
+                if (index + 1 < step) {
+                    stepEl.classList.add('completed');
+                    stepEl.classList.remove('active');
+                } else if (index + 1 === step) {
+                    stepEl.classList.add('active');
+                    stepEl.classList.remove('completed');
+                } else {
+                    stepEl.classList.remove('active', 'completed');
+                }
+            });
+        }
+
+        function nextStep(step) {
+            let isValid = false;
+            
+            switch(step) {
+                case 1:
+                    isValid = validateStep1();
+                    break;
+                case 2:
+                    isValid = validateStep2();
+                    break;
+            }
+
+            if (isValid) {
+                document.getElementById('step' + step).classList.remove('active');
+                document.getElementById('step' + (step + 1)).classList.add('active');
+                currentStep = step + 1;
+                updateProgress(currentStep);
+            }
+        }
+
+        function prevStep(step) {
+            document.getElementById('step' + step).classList.remove('active');
+            document.getElementById('step' + (step - 1)).classList.add('active');
+            currentStep = step - 1;
+            updateProgress(currentStep);
+        }
+
+        // Form submission
+        // form.addEventListener('submit', function(e) {
+        //     e.preventDefault();
+            
+        //     if (validateStep3()) {
+        //         // Show success message
+        //         Swal.fire({
+        //             icon: 'success',
+        //             title: 'Success!',
+        //             text: 'Your account has been created successfully!',
+        //             confirmButtonColor: '#ff0000'
+        //         }).then((result) => {
+        //             if (result.isConfirmed) {
+        //                 window.location.href = '{% url 'login' %}';
+        //             }
+        //         });
+        //     }
+        // });
+
+        // Add this style to handle error states
+        const style = document.createElement('style');
+        style.textContent = `
+            .error-message {
+                font-size: 0.875rem;
+                color: #dc3545;
+                margin-top: 0.25rem;
+                animation: fadeIn 0.3s ease;
+            }
+
+            .is-invalid {
+                border-color: #dc3545 !important;
+            }
+
+            .is-invalid:focus {
+                box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+            }
+
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+
+    <!-- Add SweetAlert2 for better alerts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

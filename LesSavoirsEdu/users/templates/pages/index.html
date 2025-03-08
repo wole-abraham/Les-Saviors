@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les Savoir - Education Centre</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #E53935;     /* Main red */
+            --primary-dark: #C62828;      /* Darker red for hover states */
+            --primary-light: #FFCDD2;     /* Light red for backgrounds */
+            --accent-color: #FFFFFF;      /* White */
+            --text-dark: #212121;         /* Dark text */
+            --text-light: #757575;        /* Light text */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .navbar {
+            background-color: var(--primary-color);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        .nav-link {
+            color: white !important;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+            transform: translateY(-2px);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, rgba(229, 57, 53, 0.95), rgba(198, 40, 40, 0.8)),
+                        url('education-bg.jpg') center/cover;
+            padding: 150px 0;
+            color: white;
+        }
+
+        .section-padding {
+            padding: 100px 0;
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .service-icon {
+            background: var(--primary-color);
+            transform: rotateY(360deg);
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 12px 30px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating-image {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .course-img-wrapper:hover img {
+            transform: scale(1.1);
+        }
+
+        .course-img-wrapper:hover .course-overlay {
+            opacity: 1 !important;
+        }
+
+        .card {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) rotateY(5deg);
+            box-shadow: 20px 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .progress-bar {
+            transition: width 1.5s ease-in-out;
+        }
+
+        .rating i {
+            transition: transform 0.3s ease;
+        }
+
+        .rating:hover i {
+            transform: scale(1.2);
+        }
+
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: rgba(255,255,255,0.2);
+            transform: translate(-50%, -50%) rotate(35deg) scale(0);
+            transition: transform 0.5s;
+        }
+
+        .btn-primary:hover::after {
+            transform: translate(-50%, -50%) rotate(35deg) scale(1);
+        }
+
+        .object-fit-cover {
+            object-fit: cover;
+        }
+        
+        .play-button:hover {
+            transform: scale(1.1);
+        }
+
+        .modal .btn-close {
+            background-color: white;
+            opacity: 1;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        #videoModal .modal-content {
+            background-color: transparent;
+            border: none;
+        }
+
+        .option-btn {
+            text-align: left;
+            transition: all 0.3s ease;
+            border-width: 2px;
+        }
+
+        .option-btn:hover {
+            transform: translateX(10px);
+        }
+
+        .option-btn.selected {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .question-container {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .question-container.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Animated Bar */
+        .animated-bar {
+            width: 50px;
+            height: 4px;
+            background: var(--primary-color);
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .animated-bar::after {
+            content: '';
+            position: absolute;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            100% {
+                left: 100%;
+            }
+        }
+
+        /* Text Reveal Animation */
+        .text-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: revealText 0.8s ease forwards;
+        }
+
+        @keyframes revealText {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Typing Text Effect */
+        .typing-text {
+            border-right: 3px solid var(--primary-color);
+            white-space: nowrap;
+            overflow: hidden;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary-color) }
+        }
+
+        /* Floating Card Effect */
+        .hover-float {
+            transition: transform 0.3s ease;
+        }
+
+        .hover-float:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(229, 57, 53, 0.2);
+        }
+
+        /* Icon Bounce Animation */
+        .icon-bounce {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Achievement Card Animation */
+        .achievement-card {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Counter Animation */
+        .counter-container {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards 1s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Feature Card Hover Effect */
+        .feature-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .feature-card:hover .icon-bounce {
+            animation: bounce 1s infinite;
+        }
+
+        /* Refined About Section Styles */
+        .stats-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .achievement-card {
+            animation: float 6s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        .feature-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-card:hover .icon-bounce {
+            animation: bounce 1s infinite;
+        }
+
+        .animated-bar {
+            width: 50px;
+            height: 4px;
+            background: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .text-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: revealText 0.8s ease forwards;
+        }
+
+        @keyframes revealText {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stat-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .stat-card:hover {
+            border-color: var(--primary-dark);
+        }
+
+        .stat-icon i {
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover .stat-icon i {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .info-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: var(--primary-color);
+        }
+
+        .info-card:hover {
+            background: var(--primary-dark);
+        }
+
+        .card-pattern {
+            right: -20px;
+            bottom: -20px;
+            transform: rotate(-15deg);
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover .card-pattern {
+            transform: rotate(0deg);
+        }
+
+        .opacity-10 {
+            opacity: 0.1;
+        }
+
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .counter-up {
+            animation: countUp 1s ease-out forwards;
+            color: var(--primary-color);
+        }
+
+        /* Update existing styles */
+        .bg-primary {
+            background-color: var(--primary-color) !important;
+        }
+
+        .text-primary {
+            color: var(--primary-color) !important;
+        }
+
+        /* Hero section background */
+        .about-hero {
+            background: linear-gradient(135deg, rgba(229, 57, 53, 0.95), rgba(198, 40, 40, 0.8)),
+                        url('education-bg.jpg') center/cover;
+        }
+
+        /* Stat cards */
+        .stat-card {
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .stat-card .stat-icon {
+            color: var(--primary-color);
+        }
+
+        .stat-card:hover {
+            border-color: var(--primary-dark);
+        }
+
+        /* Info cards */
+        .info-card {
+            background: var(--primary-color);
+        }
+
+        .info-card:hover {
+            background: var(--primary-dark);
+        }
+
+        .info-card .progress-bar {
+            background-color: var(--accent-color);
+        }
+
+        /* Button styles */
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Value cards hover effect */
+        .value-card:hover .value-icon {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Progress bars */
+        .progress {
+            background-color: var(--primary-light);
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(229, 57, 53, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(229, 57, 53, 0);
+            }
+        }
+
+        /* Navigation */
+        .navbar .nav-link:hover,
+        .navbar .nav-link.active {
+            color: var(--primary-color);
+        }
+
+        /* Feature icons */
+        .feature-icon {
+            color: var(--primary-color);
+        }
+
+        /* Section titles */
+        .section-title::after {
+            background-color: var(--primary-color);
+        }
+
+        .course-card {
+            transition: transform 0.3s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .course-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .course-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .course-card:hover .course-image img {
+            transform: scale(1.1);
+        }
+
+        .course-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .course-card:hover .course-overlay {
+            opacity: 1;
+        }
+
+        .course-preview {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .course-level {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            display: inline-flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+        }
+
+        .course-meta {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .badge {
+            font-size: 0.8rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .navbar .btn {
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .navbar .btn-outline-light {
+            border-width: 2px;
+        }
+
+        .navbar .btn-outline-light:hover {
+            background-color: white;
+            color: var(--primary-color) !important;
+            transform: translateY(-2px);
+        }
+
+        .navbar .btn-light {
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid white;
+        }
+
+        .navbar .btn-light:hover {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 991.98px) {
+            .navbar-nav .nav-item {
+                margin: 0.5rem 0;
+            }
+            
+            .navbar .btn {
+                width: 100%;
+                margin: 0.5rem 0;
+            }
+        }
+
+        .forum-preview {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+        }
+
+        .forum-content {
+            padding-right: 40px;
+        }
+
+        .section-subtitle {
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .section-description {
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .forum-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px;
+        }
+
+        .forum-features li {
+            margin-bottom: 15px;
+            color: #555;
+            display: flex;
+            align-items: center;
+        }
+
+        .forum-features i {
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+
+        .forum-preview-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            height: 100%;
+            transform: translateY(20px);
+        }
+
+        .sample-post {
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .sample-post:hover {
+            transform: translateY(-5px);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .post-info h4 {
+            margin: 0;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .post-info span {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .post-preview {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .post-stats {
+            display: flex;
+            gap: 20px;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .post-stats span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        @media (max-width: 991px) {
+            .forum-content {
+                padding-right: 0;
+                margin-bottom: 40px;
+            }
+            
+            .forum-preview-card {
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#home">
+                <img src="{% static 'pages/images/logo.jpg' %}" alt="Les Savoir Logo" height="40" class="me-2" style="border-radius: 50%;">
+                Les Savoir
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#courses">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'forum' %}">Forum</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                        <li class="nav-item ms-lg-3">
+                            {% if user.is_authenticated %}
+                            <a class="btn btn-outline-light rounded-pill px-4" href="{% url 'logout' %}">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a>
+                            {% else %}
+                            <a class="btn btn-outline-light rounded-pill px-4" href="{% url 'login' %}">
+                                <i class="fas fa-sign-in-alt me-2"></i>Login
+                            </a>
+                            {% endif %}
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-light rounded-pill px-4" href="{% url 'profile' %}">
+                            <i class="fas fa-user me-2"></i>Profile
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <h1 class="display-4 fw-bold mb-4">Unlock Your Potential at Les Savoir</h1>
+                    <p class="lead mb-5">Empowering minds through innovative education and personalized learning experiences</p>
+                    <a href="#courses" class="btn btn-primary me-3">Explore Courses</a>
+                    <a href="#contact" class="btn btn-outline-light">Get Started</a>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <img src="{% static 'pages/images/hero.jpg' %}" alt="Student" class="img-fluid floating-image" style="border-radius: 50px">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section-padding bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Left Column - Image -->
+                <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1200">
+                    <div class="position-relative">
+                        <img src="{% static 'pages/images/section1.jpg' %}" alt="About Us" class="img-fluid rounded-4 shadow-lg hover-float">
+                        
+                        <!-- Floating Stats Card -->
+                        <div class="position-absolute top-0 end-0 bg-white p-4 rounded-4 shadow-lg achievement-card"
+                             style="transform: translateX(20%) translateY(-20%);">
+                            <div class="d-flex align-items-center">
+                                <div class="stats-icon bg-primary text-white rounded-circle p-3 me-3">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div>
+                                    <h3 class="mb-0 counter">15</h3>
+                                    <p class="mb-0 text-muted">Years of Excellence</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Content -->
+                <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1200">
+                    <div class="ps-lg-4">
+                        <div class="animated-bar"></div>
+                        <h6 class="text-primary fw-bold text-uppercase mb-3">ABOUT LES SAVOIR</h6>
+                        <h2 class="fw-bold mb-4">Transforming Education for a Better Tomorrow</h2>
+                        
+                        <p class="lead mb-4 text-reveal">At Les Savoir, we're more than just an education center – we're a community dedicated to nurturing future leaders and innovators.</p>
+                        
+                        <!-- Feature Cards -->
+                        <div class="row g-4">
+                            <div class="col-sm-6" data-aos="zoom-in" data-aos-delay="200">
+                                <div class="feature-card p-3 bg-white rounded-4 shadow-sm">
+                                    <i class="fas fa-graduation-cap text-primary fs-3 mb-3 icon-bounce"></i>
+                                    <h5>Expert Faculty</h5>
+                                    <p class="mb-0 text-muted">Learn from experienced educators</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6" data-aos="zoom-in" data-aos-delay="400">
+                                <div class="feature-card p-3 bg-white rounded-4 shadow-sm">
+                                    <i class="fas fa-users text-primary fs-3 mb-3 icon-bounce"></i>
+                                    <h5>Small Classes</h5>
+                                    <p class="mb-0 text-muted">Personalized attention</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-5" data-aos="fade-up" data-aos-delay="600">
+                            <a href="#courses" class="btn btn-primary me-3">Explore Programs</a>
+                            <a href="#contact" class="btn btn-outline-primary">Contact Us</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Values Section -->
+    <section class="section-padding bg-primary text-white">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h6 class="text-warning fw-bold">OUR APPROACH</h6>
+                <h2 class="fw-bold">Educational Philosophy</h2>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6" data-aos="fade-up">
+                    <div class="text-center p-4">
+                        <i class="fas fa-brain fa-3x mb-4"></i>
+                        <h4 class="mb-3">Critical Thinking</h4>
+                        <p>Developing analytical skills and problem-solving abilities through engaging coursework and discussions.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-center p-4">
+                        <i class="fas fa-user-friends fa-3x mb-4"></i>
+                        <h4 class="mb-3">Personalized Learning</h4>
+                        <p>Tailoring our teaching methods to match each student's unique learning style and pace.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-center p-4">
+                        <i class="fas fa-lightbulb fa-3x mb-4"></i>
+                        <h4 class="mb-3">Innovation</h4>
+                        <p>Incorporating modern teaching techniques and technology to enhance the learning experience.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="text-center p-4">
+                        <i class="fas fa-chart-line fa-3x mb-4"></i>
+                        <h4 class="mb-3">Continuous Growth</h4>
+                        <p>Supporting ongoing development through regular feedback and progressive learning paths.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section id="why-choose" class="section-padding">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <h6 class="text-primary fw-bold">WHY CHOOSE US</h6>
+                <h2 class="fw-bold">Excellence in Education</h2>
+            </div>
+
+            <!-- Animated Stats Row -->
+            <div class="row g-4 mb-5 justify-content-center">
+                <div class="col-lg-4 col-md-4" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="stat-card text-center p-4 bg-white rounded-4 shadow-sm hover-float">
+                        <div class="stat-icon mb-3">
+                            <i class="fas fa-user-graduate text-primary display-4"></i>
+                        </div>
+                        <h3 class="counter-up mb-2">1500+</h3>
+                        <p class="text-muted mb-0">Successful Students</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="stat-card text-center p-4 bg-white rounded-4 shadow-sm hover-float">
+                        <div class="stat-icon mb-3">
+                            <i class="fas fa-chalkboard-teacher text-primary display-4"></i>
+                        </div>
+                        <h3 class="counter-up mb-2">50+</h3>
+                        <p class="text-muted mb-0">Expert Teachers</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="stat-card text-center p-4 bg-white rounded-4 shadow-sm hover-float">
+                        <div class="stat-icon mb-3">
+                            <i class="fas fa-trophy text-primary display-4"></i>
+                        </div>
+                        <h3 class="counter-up mb-2">98%</h3>
+                        <p class="text-muted mb-0">Success Rate</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info Cards Row -->
+            <div class="row g-4">
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="info-card position-relative p-4 text-white rounded-4 overflow-hidden">
+                        <div class="card-pattern position-absolute end-0 bottom-0 opacity-10">
+                            <i class="fas fa-brain fa-5x"></i>
+                        </div>
+                        <h4 class="mb-3">Innovative Learning</h4>
+                        <p>Our modern approach combines traditional excellence with cutting-edge teaching methods.</p>
+                        <div class="progress mt-4" style="height: 6px;">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: 0%" data-width="95%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="info-card position-relative p-4 text-white rounded-4 overflow-hidden">
+                        <div class="card-pattern position-absolute end-0 bottom-0 opacity-10">
+                            <i class="fas fa-users fa-5x"></i>
+                        </div>
+                        <h4 class="mb-3">Personal Attention</h4>
+                        <p>Small class sizes ensure each student receives the attention they deserve to excel.</p>
+                        <div class="progress mt-4" style="height: 6px;">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: 0%" data-width="90%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="info-card position-relative p-4 text-white rounded-4 overflow-hidden">
+                        <div class="card-pattern position-absolute end-0 bottom-0 opacity-10">
+                            <i class="fas fa-chart-line fa-5x"></i>
+                        </div>
+                        <h4 class="mb-3">Proven Results</h4>
+                        <p>Our track record speaks for itself with consistently high achievement rates.</p>
+                        <div class="progress mt-4" style="height: 6px;">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: 0%" data-width="98%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add this section after the Why Choose Us section -->
+    <section id="courses" class="section-padding bg-light">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <h6 class="text-primary fw-bold">OUR COURSES</h6>
+                <h2 class="fw-bold">Featured Learning Paths</h2>
+            </div>
+
+            <div class="row g-4">
+                <!-- Course Card 1 -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="course-card bg-white rounded-4 shadow-sm h-100 position-relative overflow-hidden">
+                        <div class="course-image position-relative">
+                            <img src="{% static 'pages/images/math.jpg' %}" alt="Mathematics" class="img-fluid">
+                            <div class="course-overlay">
+                                <span class="badge bg-primary position-absolute top-0 end-0 m-3">Bestseller</span>
+                                <div class="course-preview text-white p-4">
+                                    <h5>Course Highlights:</h5>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-check-circle me-2"></i>Interactive Sessions</li>
+                                        <li><i class="fas fa-check-circle me-2"></i>Practice Tests</li>
+                                        <li><i class="fas fa-check-circle me-2"></i>Personal Mentoring</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="course-content p-4">
+                            <div class="mb-3">
+                                <span class="course-level">
+                                    <i class="fas fa-signal me-2 text-primary"></i>Advanced
+                                </span>
+                            </div>
+                            <h4 class="mb-3">Advanced Mathematics</h4>
+                            <p class="text-muted mb-3">Master complex mathematical concepts with our comprehensive course.</p>
+                            <div class="course-meta pt-3 border-top">
+                                <div class="course-duration">
+                                    <i class="far fa-clock me-2 text-primary"></i>
+                                    12 Weeks
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course Card 2 -->
+               
+
+               
+               
+
+                <!-- Course Card 5 -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="course-card bg-white rounded-4 shadow-sm h-100 position-relative overflow-hidden">
+                        <div class="course-image position-relative">
+                            <img src="{% static 'pages/images/computer.jpg' %}" alt="Computer Science" class="img-fluid">
+                            <div class="course-overlay">
+                                <span class="badge bg-primary position-absolute top-0 end-0 m-3">Most Popular</span>
+                                <div class="course-preview text-white p-4">
+                                    <h5>Course Highlights:</h5>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-check-circle me-2"></i>Coding Projects</li>
+                                        <li><i class="fas fa-check-circle me-2"></i>Industry Mentors</li>
+                                        <li><i class="fas fa-check-circle me-2"></i>Job Placement</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="course-content p-4">
+                            <div class="mb-3">
+                                <span class="course-level">
+                                    <i class="fas fa-signal me-2 text-primary"></i>Intermediate
+                                </span>
+                            </div>
+                            <h4 class="mb-3">Computer Programming</h4>
+                            <p class="text-muted mb-3">Learn modern programming languages and development techniques.</p>
+                            <div class="course-meta pt-3 border-top">
+                                <div class="course-duration">
+                                    <i class="far fa-clock me-2 text-primary"></i>
+                                    20 Weeks
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course Card 6 -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="course-card bg-white rounded-4 shadow-sm h-100 position-relative overflow-hidden">
+                        <div class="course-image position-relative">
+                            <img src="{% static 'pages/images/science.jpg' %}" alt="Chemistry" class="img-fluid">
+                            <div class="course-overlay">
+                                <span class="badge bg-success position-absolute top-0 end-0 m-3">New</span>
+                                <div class="course-preview text-white p-4">
+                                    <h5>Course Highlights:</h5>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-check-circle me-2"></i>Lab Experiments</li>
+                                        <li><i class="fas fa-check-circle me-2"></i>Research Papers</li>
+                                        <li><i class="fas fa-check-circle me-2"></i>Industry Visits</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="course-content p-4">
+                            <div class="mb-3">
+                                <span class="course-level">
+                                    <i class="fas fa-signal me-2 text-primary"></i>Advanced
+                                </span>
+                            </div>
+                            <h4 class="mb-3">Advanced Chemistry</h4>
+                            <p class="text-muted mb-3">Explore organic chemistry and biochemistry with hands-on experiments.</p>
+                            <div class="course-meta pt-3 border-top">
+                                <div class="course-duration">
+                                    <i class="far fa-clock me-2 text-primary"></i>
+                                    14 Weeks
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course Card 7 -->
+                
+                <!-- Course Card 8 -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="course-card bg-white rounded-4 shadow-sm h-100 position-relative overflow-hidden">
+                        <div class="course-image position-relative">
+                            <img src="{% static 'pages/images/arts.jpg' %}" alt="Art & Design" class="img-fluid">
+                            <div class="course-overlay">
+                                <span class="badge bg-info position-absolute top-0 end-0 m-3">Creative</span>
+                                <div class="course-preview text-white p-4">
+                                    <h5>Course Highlights:</h5>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-check-circle me-2"></i>Portfolio Building</li>
+                                        <li><i class="fas fa-check-circle me-2"></i>Live Projects</li>
+                                        <li><i class="fas fa-check-circle me-2"></i>Art Exhibition</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="course-content p-4">
+                            <div class="mb-3">
+                                <span class="course-level">
+                                    <i class="fas fa-signal me-2 text-primary"></i>Beginner</span>
+                            </div>
+                            <h4 class="mb-3">Art & Design</h4>
+                            <p class="text-muted mb-3">Develop your artistic skills and explore various design techniques.</p>
+                            <div class="course-meta pt-3 border-top">
+                                <div class="course-duration">
+                                    <i class="far fa-clock me-2 text-primary"></i>
+                                    10 Weeks
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add "Explore Courses" Button -->
+                <div class="col-12 text-center mt-5" data-aos="fade-up">
+                    <a href="#" class="btn btn-primary btn-lg rounded-pill px-5">
+                        Explore All Courses
+                        <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Forum Section -->
+    <section class="forum-preview">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="forum-content">
+                        <span class="section-subtitle">Community</span>
+                        <h2 class="section-title">Join Our Learning Community</h2>
+                        <p class="section-description">
+                            Connect with fellow learners, share your knowledge, and get answers to your questions in our interactive forum. Our vibrant community is here to support your learning journey.
+                        </p>
+                        <ul class="forum-features">
+                            <li><i class="fas fa-check-circle"></i> Ask questions and get expert answers</li>
+                            <li><i class="fas fa-check-circle"></i> Share your knowledge and experiences</li>
+                            <li><i class="fas fa-check-circle"></i> Collaborate with peers worldwide</li>
+                            <li><i class="fas fa-check-circle"></i> Access study resources and materials</li>
+                        </ul>
+                        <a href="{% url 'forum' %}" class="btn btn-primary">
+                            <span>Join Discussion</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <h6 class="text-primary fw-bold">CONTACT US</h6>
+                    <h2 class="fw-bold mb-4">Get in Touch</h2>
+                    <form>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" placeholder="Your Name">
+                        </div>
+                        <div class="mb-3">
+                            <input type="email" class="form-control" placeholder="Your Email">
+                        </div>
+                        <div class="mb-3">
+                            <select class="form-select">
+                                <option selected>Select Course</option>
+                                <option value="mathematics">Mathematics</option>
+                                <option value="science">Science</option>
+                                <option value="english">English</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <textarea class="form-control" rows="5" placeholder="Your Message"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+                <div class="col-lg-5 offset-lg-1" data-aos="fade-left">
+                    <div class="contact-info mt-5">
+                        <div class="d-flex mb-4">
+                            <i class="fas fa-map-marker-alt text-primary fs-4 me-3"></i>
+                            <div>
+                                <h5>Our Location</h5>
+                                <p>tabarja</p>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-4">
+                            <i class="fas fa-phone text-primary fs-4 me-3"></i>
+                            <div>
+                                <h5>Call Us</h5>
+                                <p>+96170710870</p>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <i class="fas fa-envelope text-primary fs-4 me-3"></i>
+                            <div>
+                                <h5>Email Us</h5>
+                                <p>info@lessavoir.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="mb-3">Les Savoir</h5>
+                    <p>Empowering minds through quality education and innovative learning experiences.</p>
+                    <div class="social-links">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
+                    <h6 class="mb-3">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#home" class="text-white text-decoration-none">Home</a></li>
+                        <li><a href="#about" class="text-white text-decoration-none">About</a></li>
+                        <li><a href="#courses" class="text-white text-decoration-none">Courses</a></li>
+                        <li><a href="#contact" class="text-white text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
+                    <h6 class="mb-3">Courses</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white text-decoration-none">Mathematics</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Science</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">English</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Computer Science</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <h6 class="mb-3">Newsletter</h6>
+                    <p>Subscribe to our newsletter for updates</p>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Your email">
+                        <button class="btn btn-primary" type="button">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <small>&copy; 2024 Les Savoir. All rights reserved.</small>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS Animation Script -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+        
+        const userAnswers = {};
+        let currentQuestion = 1;
+
+        document.querySelectorAll('.option-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove selected class from other buttons in the same question
+                const parent = this.closest('.question-container');
+                parent.querySelectorAll('.option-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+
+                // Add selected class to clicked button
+                this.classList.add('selected');
+
+                // Store the answer
+                const questionNumber = parent.dataset.question;
+                userAnswers[questionNumber] = this.dataset.type || this.dataset.subject;
+
+                // Delay before showing next question
+                setTimeout(() => {
+                    if (currentQuestion < 2) {
+                        // Show next question
+                        parent.style.display = 'none';
+                        const nextQuestion = document.querySelector(`[data-question="${currentQuestion + 1}"]`);
+                        nextQuestion.style.display = 'block';
+                        setTimeout(() => nextQuestion.classList.add('active'), 100);
+                        currentQuestion++;
+                        updateProgressBar();
+                    } else {
+                        // Show results
+                        showResults();
+                    }
+                }, 500);
+            });
+        });
+
+        function updateProgressBar() {
+            const progress = (currentQuestion / 2) * 100;
+            document.querySelector('.progress-bar').style.width = `${progress}%`;
+        }
+
+        function showResults() {
+            document.querySelectorAll('.question-container').forEach(q => q.style.display = 'none');
+            const resultsContainer = document.getElementById('resultsContainer');
+            resultsContainer.style.display = 'block';
+
+            // Generate personalized message based on answers
+            const learningStyle = document.getElementById('learningStyle');
+            const courseRecommendation = document.getElementById('courseRecommendation');
+
+            const styleMessages = {
+                visual: "You learn best through visual aids and diagrams.",
+                auditory: "You prefer learning through listening and discussion.",
+                kinesthetic: "You excel with hands-on, practical learning experiences."
+            };
+
+            const subjectMessages = {
+                math: "Our Advanced Mathematics program would be perfect for you!",
+                science: "You'd thrive in our Science program with its hands-on experiments!",
+                language: "Our English Language program would help you excel!"
+            };
+
+            learningStyle.innerHTML = `<div class="alert alert-primary">
+                ${styleMessages[userAnswers['1']] || ''}
+            </div>`;
+
+            courseRecommendation.innerHTML = `<div class="alert alert-success">
+                ${subjectMessages[userAnswers['2']] || ''}
+            </div>`;
+        }
+
+        function resetQuiz() {
+            currentQuestion = 1;
+            userAnswers = {};
+            document.getElementById('resultsContainer').style.display = 'none';
+            document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
+            document.querySelectorAll('.question-container').forEach(q => q.classList.remove('active'));
+            const firstQuestion = document.querySelector('[data-question="1"]');
+            firstQuestion.style.display = 'block';
+            setTimeout(() => firstQuestion.classList.add('active'), 100);
+            updateProgressBar();
+        }
+
+        // Initialize Tilt Effect
+        VanillaTilt.init(document.querySelector(".tilt-container"), {
+            max: 10,
+            speed: 400,
+            glare: true,
+            "max-glare": 0.3
+        });
+
+        // Counter Animation
+        const counter = document.querySelector('.counter');
+        const target = parseInt(counter.innerText);
+        let count = 0;
+        
+        const updateCounter = () => {
+            if (count < target) {
+                count++;
+                counter.innerText = count;
+                setTimeout(updateCounter, 100);
+            }
+        };
+
+        // Start counter when element is in view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    updateCounter();
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+
+        observer.observe(counter);
+    </script>
+</body>
+</html>
