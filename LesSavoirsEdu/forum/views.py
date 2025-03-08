@@ -6,6 +6,7 @@ from forum.models import Comment
 
 # Create your views here.
 
+@login_required
 def forum(request):
     if request.method == "POST":
         author = request.user
