@@ -1027,10 +1027,14 @@
 
             <div class="row g-4">
                 <!-- Course Card 1 -->
+                 {% for course in courses %}
+                 
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <a href="{% url 'courses' %}">
                     <div class="course-card bg-white rounded-4 shadow-sm h-100 position-relative overflow-hidden">
                         <div class="course-image position-relative">
-                            <img src="{% static 'pages/images/math.jpg' %}" alt="Mathematics" class="img-fluid">
+
+                           <img src="{{ course.image.url }}" alt="Mathematics" class="img-fluid">>
                             <div class="course-overlay">
                                 <span class="badge bg-primary position-absolute top-0 end-0 m-3">Bestseller</span>
                                 <div class="course-preview text-white p-4">
@@ -1049,8 +1053,8 @@
                                     <i class="fas fa-signal me-2 text-primary"></i>Advanced
                                 </span>
                             </div>
-                            <h4 class="mb-3">Advanced Mathematics</h4>
-                            <p class="text-muted mb-3">Master complex mathematical concepts with our comprehensive course.</p>
+                            <h4 class="mb-3">{{ course.title }}</h4>
+                            <p class="text-muted mb-3">{{ course.description }}</p>
                             <div class="course-meta pt-3 border-top">
                                 <div class="course-duration">
                                     <i class="far fa-clock me-2 text-primary"></i>
@@ -1059,7 +1063,10 @@
                             </div>
                         </div>
                     </div>
+                </a>
                 </div>
+            
+                {% endfor %}
 
                 <!-- Course Card 2 -->
                
@@ -1067,115 +1074,12 @@
                
                
 
-                <!-- Course Card 5 -->
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="course-card bg-white rounded-4 shadow-sm h-100 position-relative overflow-hidden">
-                        <div class="course-image position-relative">
-                            <img src="{% static 'pages/images/computer.jpg' %}" alt="Computer Science" class="img-fluid">
-                            <div class="course-overlay">
-                                <span class="badge bg-primary position-absolute top-0 end-0 m-3">Most Popular</span>
-                                <div class="course-preview text-white p-4">
-                                    <h5>Course Highlights:</h5>
-                                    <ul class="list-unstyled">
-                                        <li><i class="fas fa-check-circle me-2"></i>Coding Projects</li>
-                                        <li><i class="fas fa-check-circle me-2"></i>Industry Mentors</li>
-                                        <li><i class="fas fa-check-circle me-2"></i>Job Placement</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="course-content p-4">
-                            <div class="mb-3">
-                                <span class="course-level">
-                                    <i class="fas fa-signal me-2 text-primary"></i>Intermediate
-                                </span>
-                            </div>
-                            <h4 class="mb-3">Computer Programming</h4>
-                            <p class="text-muted mb-3">Learn modern programming languages and development techniques.</p>
-                            <div class="course-meta pt-3 border-top">
-                                <div class="course-duration">
-                                    <i class="far fa-clock me-2 text-primary"></i>
-                                    20 Weeks
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+               
                 <!-- Course Card 6 -->
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                    <div class="course-card bg-white rounded-4 shadow-sm h-100 position-relative overflow-hidden">
-                        <div class="course-image position-relative">
-                            <img src="{% static 'pages/images/science.jpg' %}" alt="Chemistry" class="img-fluid">
-                            <div class="course-overlay">
-                                <span class="badge bg-success position-absolute top-0 end-0 m-3">New</span>
-                                <div class="course-preview text-white p-4">
-                                    <h5>Course Highlights:</h5>
-                                    <ul class="list-unstyled">
-                                        <li><i class="fas fa-check-circle me-2"></i>Lab Experiments</li>
-                                        <li><i class="fas fa-check-circle me-2"></i>Research Papers</li>
-                                        <li><i class="fas fa-check-circle me-2"></i>Industry Visits</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="course-content p-4">
-                            <div class="mb-3">
-                                <span class="course-level">
-                                    <i class="fas fa-signal me-2 text-primary"></i>Advanced
-                                </span>
-                            </div>
-                            <h4 class="mb-3">Advanced Chemistry</h4>
-                            <p class="text-muted mb-3">Explore organic chemistry and biochemistry with hands-on experiments.</p>
-                            <div class="course-meta pt-3 border-top">
-                                <div class="course-duration">
-                                    <i class="far fa-clock me-2 text-primary"></i>
-                                    14 Weeks
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Course Card 7 -->
-                
-                <!-- Course Card 8 -->
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="course-card bg-white rounded-4 shadow-sm h-100 position-relative overflow-hidden">
-                        <div class="course-image position-relative">
-                            <img src="{% static 'pages/images/arts.jpg' %}" alt="Art & Design" class="img-fluid">
-                            <div class="course-overlay">
-                                <span class="badge bg-info position-absolute top-0 end-0 m-3">Creative</span>
-                                <div class="course-preview text-white p-4">
-                                    <h5>Course Highlights:</h5>
-                                    <ul class="list-unstyled">
-                                        <li><i class="fas fa-check-circle me-2"></i>Portfolio Building</li>
-                                        <li><i class="fas fa-check-circle me-2"></i>Live Projects</li>
-                                        <li><i class="fas fa-check-circle me-2"></i>Art Exhibition</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="course-content p-4">
-                            <div class="mb-3">
-                                <span class="course-level">
-                                    <i class="fas fa-signal me-2 text-primary"></i>Beginner</span>
-                            </div>
-                            <h4 class="mb-3">Art & Design</h4>
-                            <p class="text-muted mb-3">Develop your artistic skills and explore various design techniques.</p>
-                            <div class="course-meta pt-3 border-top">
-                                <div class="course-duration">
-                                    <i class="far fa-clock me-2 text-primary"></i>
-                                    10 Weeks
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+            
                 <!-- Add "Explore Courses" Button -->
                 <div class="col-12 text-center mt-5" data-aos="fade-up">
-                    <a href="#" class="btn btn-primary btn-lg rounded-pill px-5">
+                    <a href="{% url 'courses' %}" class="btn btn-primary btn-lg rounded-pill px-5">
                         Explore All Courses
                         <i class="fas fa-arrow-right ms-2"></i>
                     </a>

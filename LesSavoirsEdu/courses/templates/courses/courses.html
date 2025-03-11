@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Courses - Les Savoir</title>
@@ -11,292 +12,360 @@
             --primary-color: #e53935;
             --primary-light: #ff6f60;
             --primary-dark: #ab000d;
-            --text-dark: #333;
-            --border-radius: 10px;
+            --sidebar-width: 300px;
         }
 
         body {
             background: #f8f9fa;
+            overflow-x: hidden;
         }
 
-        .course-card {
+        .layout-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
             background: white;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            margin-bottom: 25px;
-            border: 1px solid rgba(0,0,0,0.08);
-        }
-
-        .course-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-
-        .course-image {
-            height: 200px;
-            object-fit: cover;
-            width: 100%;
-        }
-
-        .course-content {
+            border-right: 1px solid #eee;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
             padding: 20px;
         }
 
-        .instructor-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(255,255,255,0.9);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: 30px;
+        }
+
+        .course-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .course-item {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #eee;
+            color: #333;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .course-item:hover {
+            background: #f8f9fa;
+            transform: translateX(5px);
+            text-decoration: none;
+            color: var(--primary-color);
+        }
+
+        .course-item.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .course-item h5 {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .course-item small {
+            opacity: 0.8;
+        }
+
+        .video-container {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 30px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        .instructor-avatar {
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-        }
-
-        .chat-button {
-            background: var(--primary-color);
-            color: white;
+        .video-frame {
+            width: 100%;
+            height: 500px;
             border: none;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
-        .chat-button:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-        }
-
-        .chat-modal {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 350px;
+        .course-info {
             background: white;
             border-radius: 15px;
-            box-shadow: 0 5px 30px rgba(0,0,0,0.15);
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .instructor-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .instructor-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .course-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-card i {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                z-index: 1000;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        .course-content {
+            display: none;
+        }
+        .course-content:first-child {
+            display: block;
+        }
+
+        .navbar {
+            position: fixed;
+            width: 100%;
+            top: 0;
             z-index: 1000;
         }
 
-        .chat-header {
-            background: var(--primary-color);
-            color: white;
-            padding: 15px;
-            border-radius: 15px 15px 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .navbar-nav .nav-link {
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s ease;
         }
 
-        .chat-messages {
-            height: 300px;
-            padding: 15px;
-            overflow-y: auto;
+        .navbar-nav .nav-link:hover {
+            color: var(--primary-color);
         }
 
-        .chat-input {
-            padding: 15px;
-            border-top: 1px solid #eee;
-            display: flex;
-            gap: 10px;
+        .navbar-nav .nav-link.active {
+            color: var(--primary-color);
+            position: relative;
         }
 
-        .message {
-            margin-bottom: 15px;
-            max-width: 80%;
+        .navbar-nav .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1rem;
+            right: 1rem;
+            height: 2px;
+            background-color: var(--primary-color);
         }
 
-        .message-content {
-            padding: 10px 15px;
-            border-radius: 15px;
-            font-size: 0.9rem;
+        /* Adjust layout container to account for fixed navbar */
+        .layout-container {
+            margin-top: 56px; /* Height of navbar */
         }
 
-        .sent {
-            margin-left: auto;
+        /* Update sidebar top position */
+        .sidebar {
+            top: 56px; /* Height of navbar */
+            height: calc(100vh - 56px);
         }
 
-        .sent .message-content {
-            background: var(--primary-color);
-            color: white;
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0.5rem 1rem;
+            }
         }
 
-        .received .message-content {
-            background: #f0f0f0;
-            color: var(--text-dark);
+        /* Logo styles */
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand:hover .logo-img {
+            transform: scale(1.05);
+        }
+
+        /* Update navbar height to accommodate logo */
+        .navbar {
+            min-height: 70px;
+        }
+
+        /* Adjust layout container margin for new navbar height */
+        .layout-container {
+            margin-top: 70px;
+        }
+
+        /* Update sidebar top position */
+        .sidebar {
+            top: 70px;
+            height: calc(100vh - 70px);
         }
     </style>
 </head>
 <body>
 
-<div class="container py-5">
-    <h1 class="mb-4">Available Courses</h1>
-    
-    <div class="row">
-        <!-- Course Card 1 -->
-        <div class="col-md-6 col-lg-4">
-            <div class="course-card">
-                <div class="position-relative">
-                    <img src="https://via.placeholder.com/400x200" alt="Web Development" class="course-image">
-                    <div class="instructor-badge">
-                        <img src="https://via.placeholder.com/50" alt="John Doe" class="instructor-avatar">
-                        <span>John Doe</span>
-                    </div>
-                </div>
-                <div class="course-content">
-                    <h3>Web Development Fundamentals</h3>
-                    <p>Learn the basics of web development with HTML, CSS, and JavaScript.</p>
-                    <button class="chat-button" onclick="openChat('John Doe', 'Web Development')">
-                        <i class="fas fa-comment"></i>
-                        Chat with Instructor
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Course Card 2 -->
-        <div class="col-md-6 col-lg-4">
-            <div class="course-card">
-                <div class="position-relative">
-                    <img src="https://via.placeholder.com/400x200" alt="Data Science" class="course-image">
-                    <div class="instructor-badge">
-                        <img src="https://via.placeholder.com/50" alt="Sarah Smith" class="instructor-avatar">
-                        <span>Sarah Smith</span>
-                    </div>
-                </div>
-                <div class="course-content">
-                    <h3>Data Science Essentials</h3>
-                    <p>Master the fundamentals of data science and analytics.</p>
-                    <button class="chat-button" onclick="openChat('Sarah Smith', 'Data Science')">
-                        <i class="fas fa-comment"></i>
-                        Chat with Instructor
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Course Card 3 -->
-        <div class="col-md-6 col-lg-4">
-            <div class="course-card">
-                <div class="position-relative">
-                    <img src="https://via.placeholder.com/400x200" alt="Digital Marketing" class="course-image">
-                    <div class="instructor-badge">
-                        <img src="https://via.placeholder.com/50" alt="Mike Johnson" class="instructor-avatar">
-                        <span>Mike Johnson</span>
-                    </div>
-                </div>
-                <div class="course-content">
-                    <h3>Digital Marketing Strategy</h3>
-                    <p>Learn modern digital marketing techniques and strategies.</p>
-                    <button class="chat-button" onclick="openChat('Mike Johnson', 'Digital Marketing')">
-                        <i class="fas fa-comment"></i>
-                        Chat with Instructor
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Chat Modal -->
-<div class="chat-modal" id="chatModal">
-    <div class="chat-header">
-        <div>
-            <h5 class="mb-0" id="chatInstructorName">Instructor Name</h5>
-            <small id="chatCourseName">Course Name</small>
-        </div>
-        <button class="btn text-white" onclick="closeChat()">
-            <i class="fas fa-times"></i>
+<!-- Add this right after <body> tag and before .layout-container -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+            <img src="{% static 'pages/images/logo.jpg' %}" alt="Les Savoir Logo" class="logo-img">
+            <span class="ms-2" style="color: var(--primary-color); font-weight: bold;">Les Savoir</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
         </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'courses' %}">Courses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'forum' %}">Forum</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                </li>
+            </ul>
+        </div>
     </div>
-    <div class="chat-messages" id="chatMessages">
-        <!-- Messages will be added here -->
+</nav>
+
+<div class="layout-container">
+    <!-- Sidebar with Course List -->
+    <div class="sidebar">
+        <h4 class="mb-4">Available Courses</h4>
+        <div class="course-list">
+            {% for course in courses %}
+            <a href="#{{course.id}}" class="course-item {% if forloop.first %}active{% endif %}" onclick="showCourse('{{course.id}}')">
+                <h5>{{ course.title }}</h5>
+                <small>{{ course.instructor.initials }} • 12 Lessons</small>
+            </a>
+            {% endfor %}
+        </div>
     </div>
-    <div class="chat-input">
-        <input type="text" class="form-control" placeholder="Type your message..." id="messageInput">
-        <button class="chat-button" onclick="sendMessage()">
-            <i class="fas fa-paper-plane"></i>
-        </button>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        
+        <!-- Web Development Course -->
+         {% for course in courses %}
+        <div class="course-content" id="{{ course.id }}">
+            <div class="video-container">
+                <iframe class="video-frame" 
+                    src="{{ course.url }}" 
+                    allowfullscreen></iframe>
+            </div>
+
+            <div class="course-info">
+                <h2>{{ course.title }}</h2>
+                
+                <div class="instructor-info">
+                    <img src="{{ course.instructor.profile.profile_picture.url }}" alt="John Doe" class="instructor-avatar">
+                    <div>
+                        <h5>{{ course.instructor.initials }}</h5>
+                        <p class="mb-0">Senior Web Developer • 10+ years experience</p>
+                    </div>
+                </div>
+
+                <div class="course-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-book"></i>
+                        <h4>12</h4>
+                        <p class="mb-0">Lessons</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-clock"></i>
+                        <h4>24h</h4>
+                        <p class="mb-0">Duration</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-users"></i>
+                        <h4>1.2k</h4>
+                        <p class="mb-0">Students</p>
+                    </div>
+                </div>
+
+                <h4>Course Description</h4>
+                <p>Learn web development from scratch! This comprehensive course covers HTML, CSS, JavaScript, and modern web development practices.</p>
+
+                <h4>What You'll Learn</h4>
+                <ul>
+                    <li>HTML5 structure and semantics</li>
+                    <li>CSS3 styling and animations</li>
+                    <li>JavaScript fundamentals</li>
+                    <li>Responsive design principles</li>
+                    <li>Modern development tools</li>
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+
+        
+
     </div>
 </div>
 
 <script>
-    function openChat(instructor, course) {
-        const modal = document.getElementById('chatModal');
-        document.getElementById('chatInstructorName').textContent = instructor;
-        document.getElementById('chatCourseName').textContent = course;
-        modal.style.display = 'block';
-        
-        // Add welcome message
-        const messages = document.getElementById('chatMessages');
-        messages.innerHTML = `
-            <div class="message received">
-                <div class="message-content">
-                    Hello! I'm ${instructor}, your instructor for ${course}. How can I help you today?
-                </div>
-            </div>
-        `;
-    }
-
-    function closeChat() {
-        document.getElementById('chatModal').style.display = 'none';
-    }
-
-    function sendMessage() {
-        const input = document.getElementById('messageInput');
-        const message = input.value.trim();
-        
-        if (message) {
-            const messages = document.getElementById('chatMessages');
-            
-            // Add user message
-            messages.innerHTML += `
-                <div class="message sent">
-                    <div class="message-content">
-                        ${message}
-                    </div>
-                </div>
-            `;
-
-            // Simulate instructor response
-            setTimeout(() => {
-                messages.innerHTML += `
-                    <div class="message received">
-                        <div class="message-content">
-                            Thanks for your message! I'll get back to you soon.
-                        </div>
-                    </div>
-                `;
-                messages.scrollTop = messages.scrollHeight;
-            }, 1000);
-
-            input.value = '';
-            messages.scrollTop = messages.scrollHeight;
-        }
-    }
-
-    // Allow sending message with Enter key
-    document.getElementById('messageInput').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            sendMessage();
-        }
+function showCourse(courseId) {
+    // Hide all courses
+    document.querySelectorAll('.course-content').forEach(course => {
+        course.style.display = 'none';
     });
+    
+    // Show selected course
+    document.getElementById(courseId).style.display = 'block';
+    
+    // Update active state in sidebar
+    document.querySelectorAll('.course-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    document.querySelector(`[href="#${courseId}"]`).classList.add('active');
+}
 </script>
+
+<!-- Add this before closing </body> tag -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
+

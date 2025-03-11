@@ -21,7 +21,7 @@ def forum(request):
                             image = image,
                             course=course)
         return redirect(forum)
-    return render(request, 'forum/forum.html', {'posts': Post.objects.all().order_by('-id')})
+    return render(request, 'forum/forum.html', {'posts': Post.objects.all().order_by('-id'), 'courses': Course.objects.all()})
 
 @login_required
 def Post_comment(request, post_id):

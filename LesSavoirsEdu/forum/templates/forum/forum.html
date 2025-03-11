@@ -781,10 +781,10 @@
                             <label class="form-label">Category</label>
                             <select class="form-select" required name="course">
                                 <option value="" selected disabled>Select a category</option>
-                                <option value="mathematics">Mathematics</option>
-                                <option value="science">Science</option>
-                                <option value="general">General</option>
-                                <option value="Programming">Programming</option>
+                                {% for course in courses %}
+                                <option value="{{course.title}}">{{course.title}}</option>
+                                {% endfor %}
+                               
                                 
                             </select>
                         </div>

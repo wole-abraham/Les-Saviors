@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from .models import CustomUser, Profile
+from courses.models import Course
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 # Create your views here.
 
 def home(request):
-    return render(request, "pages/index.html")
+
+    return render(request, "pages/index.html", {'courses': Course.objects.all()})
 
 def login_view(request):
     if request.method == "POST":
