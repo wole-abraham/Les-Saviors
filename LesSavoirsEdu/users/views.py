@@ -11,6 +11,12 @@ def home(request):
 
     return render(request, "pages/index.html", {'courses': Course.objects.all()})
 
+def about(request):
+    return render(request, "pages/about.html")
+
+def services(request):
+    return render(request, "pages/services.html")   
+
 def login_view(request):
     if request.method == "POST":
         email = request.POST.get('email')

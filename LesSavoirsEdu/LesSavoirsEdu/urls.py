@@ -19,10 +19,14 @@ from django.urls import path, include
 from users import views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("favicon.ico", TemplateView.as_view(template_name="favicon.ico", content_type="image/x-icon")),
     path('',  views.home, name="home"),
+    path('about/',  views.about, name="about"), 
+    path('services/',  views.services, name="services"), 
     path('accounts/', include('users.urls')),
     path('forum/', include("forum.urls")),
     path('courses/', include("courses.urls")),
