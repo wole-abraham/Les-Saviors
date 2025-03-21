@@ -369,7 +369,7 @@
         const patterns = {
             email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
             password: /^.{6,}$/, // At least 6 characters
-            phone: /^[0-9]{10}$/, // 10 digits
+            phone: /^\+?[0-9]{1,15}$/, // 10 digits
             name: /^[a-zA-Z\s]{2,}$/ // At least 2 characters, letters only
         };
 
